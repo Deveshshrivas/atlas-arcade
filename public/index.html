@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Play the best free online HTML5 browser games including classic retro games, arcade action, and puzzles. Compete on global leaderboards!">
+  <meta name="keywords" content="free online games, browser games, HTML5 games, play games online, arcade games, unblocked HTML5 games, retro games, puzzle games">
+  
+  <meta property="og:title" content="Atlas Arcade - Free Online HTML5 Games">
+  <meta property="og:description" content="Play the best free online HTML5 browser games including classic retro games, arcade action, and puzzles.">
+  <meta property="og:type" content="website">
+
+  <title>Atlas Arcade - Play & Compete Online</title>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Atlas Arcade",
+    "description": "A collection of 16 free HTML5 arcade, puzzle, and classic browser games.",
+    "url": "https://atlas-arcade.example.com",
+    "about": {
+      "@type": "VideoGameSeries",
+      "name": "Atlas Arcade Game Collection",
+      "characterAttribute": "16 Games included"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="brand" id="brand-home">
+        <span class="brand-icon">🕹️</span>
+        <span class="brand-name">ATLAS ARCADE</span>
+      </div>
+
+      <div class="nav-center">
+        <button id="nav-hub-btn" class="nav-link active">Arcade Hub</button>
+        <button id="nav-leaderboard-btn" class="nav-link">🏆 Leaderboard</button>
+      </div>
+
+      <div class="nav-right">
+        <!-- MongoDB Atlas Status Badge -->
+        <div id="db-status-badge" class="db-badge connecting" title="MongoDB Atlas Status">
+          <span class="dot"></span>
+          <span id="db-status-text">Atlas</span>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button id="global-sound-btn" class="icon-btn" title="Toggle Sound">
+          🔊
+        </button>
+
+        <!-- User Auth Section -->
+        <div id="auth-nav-guest">
+          <button id="open-auth-btn" class="btn btn-sm btn-primary">Sign In / Register</button>
+        </div>
+
+        <div id="auth-nav-user" class="hidden">
+          <div class="user-chip">
+            <span class="user-avatar" id="nav-user-initials">U</span>
+            <span class="user-name" id="nav-user-name">User</span>
+            <button id="nav-logout-btn" class="btn-logout" title="Sign Out">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden">
+    <span id="toast-message"></span>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- VIEW 1: ARCADE HUB (Game Selection) -->
+    <section id="arcade-hub" class="view-section">
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h1>PLAY. COMPETE. DOMINATE.</h1>
+          <p>20 complete retro, action & puzzle arcade games with live MongoDB Atlas high-score leaderboards.</p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box">
+            <span class="stat-num" id="total-games-count">20</span>
+            <span class="stat-lbl">Games</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num" id="player-status-badge">Guest</span>
+            <span class="stat-lbl">Status</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filters -->
+      <div class="category-filters">
+        <button class="filter-btn active" data-category="all">All Games</button>
+        <button class="filter-btn" data-category="arcade">Arcade Action</button>
+        <button class="filter-btn" data-category="puzzle">Puzzles</button>
+        <button class="filter-btn" data-category="classic">Classics</button>
+      </div>
+
+      <!-- Games Grid -->
+      <div class="games-grid">
+        <!-- 1. Snake -->
+        <div class="game-card" data-game="snake" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🐍</div>
+          <h3>Neon Snake</h3>
+          <p>Classic retro snake with golden apples, accelerating speed, and tight turns.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-snake">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('snake')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 2. Brick Breaker -->
+        <div class="game-card" data-game="breakout" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🧱</div>
+          <h3>Brick Breaker</h3>
+          <p>Shatter colorful brick tiers with paddle bounces, angle physics, and score combos.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-breakout">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('breakout')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 3. Flappy Wings -->
+        <div class="game-card" data-game="flappy" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🐦</div>
+          <h3>Flappy Wings</h3>
+          <p>Tap and flap through challenging moving pipes in a neon cyber universe.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-flappy">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('flappy')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 4. 2048 Puzzle -->
+        <div class="game-card" data-game="2048" data-category="puzzle">
+          <div class="game-badge badge-puzzle">Puzzle</div>
+          <div class="game-icon-wrap">🔢</div>
+          <h3>2048 Puzzle</h3>
+          <p>Slide and merge matching tiles to reach the legendary 2048 tile and beyond.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-2048">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('2048')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 5. Cyber Memory Match -->
+        <div class="game-card" data-game="memory" data-category="puzzle">
+          <div class="game-badge badge-puzzle">Puzzle</div>
+          <div class="game-icon-wrap">🎴</div>
+          <h3>Cyber Memory</h3>
+          <p>Test your recall by flipping and matching cyber pairs in record time.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-memory">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('memory')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 6. Tic-Tac-Toe Master -->
+        <div class="game-card" data-game="tictactoe" data-category="classic">
+          <div class="game-badge badge-classic">Classic</div>
+          <div class="game-icon-wrap">❌</div>
+          <h3>Tic-Tac-Toe Master</h3>
+          <p>Battle our unbeatable Minimax AI or challenge a friend locally to build win streaks.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-tictactoe">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('tictactoe')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 7. Galaxy Invaders -->
+        <div class="game-card" data-game="invaders" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">👾</div>
+          <h3>Galaxy Invaders</h3>
+          <p>Defend Earth against descending alien waves, dodge plasma blasts, and destroy mystery UFOs.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-invaders">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('invaders')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 8. Neon Pong -->
+        <div class="game-card" data-game="pong" data-category="classic">
+          <div class="game-badge badge-classic">Classic</div>
+          <div class="game-icon-wrap">🏓</div>
+          <h3>Neon Pong</h3>
+          <p>Fast-paced retro table tennis against an adaptive AI with rally multiplier combos.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-pong">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('pong')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 9. Cyber Highway Racer -->
+        <div class="game-card" data-game="racer" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🏎️</div>
+          <h3>Highway Racer</h3>
+          <p>Weave through heavy neon traffic at blistering speeds, grab nitro, and avoid fatal crashes.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-racer">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('racer')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 10. Sky Jumper -->
+        <div class="game-card" data-game="jump" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🦘</div>
+          <h3>Sky Jumper</h3>
+          <p>Endless vertical jumper with moving platforms, super-bounce springs, and starry heights.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-jump">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('jump')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 11. Cyber Minesweeper -->
+        <div class="game-card" data-game="minesweeper" data-category="puzzle">
+          <div class="game-badge badge-puzzle">Puzzle</div>
+          <div class="game-icon-wrap">💣</div>
+          <h3>Minesweeper</h3>
+          <p>Clear the 9x9 grid without detonating hidden mines. Flag suspected nodes and race the clock.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-minesweeper">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('minesweeper')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 12. Whack-A-Cyberbug -->
+        <div class="game-card" data-game="whack" data-category="classic">
+          <div class="game-badge badge-classic">Classic</div>
+          <div class="game-icon-wrap">⚡</div>
+          <h3>Whack-A-Bug</h3>
+          <p>30-second rapid reflex challenge! Whack cyber bugs popping out of server nodes for combos.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-whack">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('whack')">Play Now</button>
+          </div>
+        </div>
+        <!-- 13. Cyber Tetris -->
+        <div class="game-card" data-game="tetris" data-category="puzzle">
+          <div class="game-badge badge-puzzle">Puzzle</div>
+          <div class="game-icon-wrap">🧱</div>
+          <h3>Cyber Tetris</h3>
+          <p>Drop and rotate falling blocks to clear lines in this neon cyber grid.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-tetris">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('tetris')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 14. Asteroids -->
+        <div class="game-card" data-game="asteroids" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">☄️</div>
+          <h3>Asteroids</h3>
+          <p>Blast space rocks into dust while navigating your neon ship through asteroid fields.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-asteroids">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('asteroids')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 15. Neon Maze (Pacman) -->
+        <div class="game-card" data-game="pacman" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">👻</div>
+          <h3>Neon Maze</h3>
+          <p>Chomp data pellets and evade cyber ghosts in an electrifying neon labyrinth.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-pacman">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('pacman')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 16. Cyber Typer -->
+        <div class="game-card" data-game="typing" data-category="puzzle">
+          <div class="game-badge badge-puzzle">Puzzle</div>
+          <div class="game-icon-wrap">⌨️</div>
+          <h3>Cyber Typer</h3>
+          <p>Defend the mainframe by rapidly typing the falling commands before they hit.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-typing">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('typing')">Play Now</button>
+          </div>
+        </div>
+        <!-- 17. Cyber Frogger -->
+        <div class="game-card" data-game="frogger" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🐸</div>
+          <h3>Cyber Frogger</h3>
+          <p>Dodge traffic and cross the neon highway to reach the safe data nodes.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-frogger">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('frogger')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 18. Neon Simon -->
+        <div class="game-card" data-game="simon" data-category="puzzle">
+          <div class="game-badge badge-puzzle">Puzzle</div>
+          <div class="game-icon-wrap">🎨</div>
+          <h3>Neon Simon</h3>
+          <p>Follow the sequence of lights and sounds. How long can your memory last?</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-simon">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('simon')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 19. Space Platformer -->
+        <div class="game-card" data-game="platformer" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🏃</div>
+          <h3>Space Platformer</h3>
+          <p>Run and jump through a side-scrolling alien landscape to collect energy cores.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-platformer">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('platformer')">Play Now</button>
+          </div>
+        </div>
+
+        <!-- 20. Neon Copter -->
+        <div class="game-card" data-game="copter" data-category="arcade">
+          <div class="game-badge">Arcade</div>
+          <div class="game-icon-wrap">🚁</div>
+          <h3>Neon Copter</h3>
+          <p>Hold to ascend, release to descend. Navigate the perilous digital cavern.</p>
+          <div class="card-footer">
+            <div class="high-score-info">
+              <span>Best:</span>
+              <strong class="best-score" id="best-copter">0</strong>
+            </div>
+            <button class="btn btn-play" onclick="arcade.launchGame('copter')">Play Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: GAME ARENA -->
+    <section id="game-arena" class="view-section hidden">
+      <!-- Arena Header HUD -->
+      <div class="arena-header">
+        <button id="arena-back-btn" class="btn btn-sm btn-secondary">← Back to Arcade</button>
+
+        <div class="arena-title-wrap">
+          <h2 id="arena-game-title">Neon Snake</h2>
+          <span id="arena-game-badge" class="badge">Arcade</span>
+        </div>
+
+        <div class="arena-scores">
+          <div class="score-card">
+            <span class="score-lbl">SCORE</span>
+            <span class="score-val" id="arena-current-score">0</span>
+          </div>
+          <div class="score-card">
+            <span class="score-lbl">BEST</span>
+            <span class="score-val best" id="arena-best-score">0</span>
+          </div>
+        </div>
+
+        <div class="arena-controls">
+          <button id="arena-pause-btn" class="btn btn-sm btn-secondary" title="Pause/Resume">⏸️ Pause</button>
+          <button id="arena-restart-btn" class="btn btn-sm btn-secondary" title="Restart">🔄 Restart</button>
+        </div>
+      </div>
+
+      <!-- Game Viewport Frame -->
+      <div class="arena-viewport-container">
+        <!-- Canvas for Snake, Breakout, Flappy, 2048 -->
+        <canvas id="game-canvas" class="game-canvas"></canvas>
+
+        <!-- DOM Container for Memory & Tic-Tac-Toe -->
+        <div id="game-dom-container" class="game-dom-container hidden"></div>
+
+        <!-- Mobile Touch Controls (D-Pad) -->
+        <div id="mobile-dpad" class="mobile-dpad hidden">
+          <button class="dpad-btn up" data-dir="UP">▲</button>
+          <div class="dpad-middle">
+            <button class="dpad-btn left" data-dir="LEFT">◀</button>
+            <div class="dpad-center"></div>
+            <button class="dpad-btn right" data-dir="RIGHT">▶</button>
+          </div>
+          <button class="dpad-btn down" data-dir="DOWN">▼</button>
+        </div>
+      </div>
+
+      <!-- Game Controls Instruction Banner -->
+      <div class="controls-hint" id="controls-hint">
+        🎮 <span>Controls: Arrow Keys or WASD to move</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL: GAME OVER & SCORE SUBMISSION -->
+  <div id="gameover-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="gameover-header">
+        <span class="gameover-icon">🏆</span>
+        <h2>GAME OVER</h2>
+        <p id="gameover-game-name">Neon Snake</p>
+      </div>
+
+      <div class="gameover-score-box">
+        <div class="final-score-row">
+          <span>Final Score</span>
+          <span class="final-score-num" id="modal-final-score">0</span>
+        </div>
+        <div class="highscore-badge hidden" id="modal-new-best">
+          ⭐ NEW PERSONAL BEST! ⭐
+        </div>
+        <div class="rank-badge hidden" id="modal-rank-badge">
+          Global Rank: <strong id="modal-rank-num">#1</strong>
+        </div>
+      </div>
+
+      <!-- MongoDB Atlas Sync Status Message -->
+      <div id="modal-atlas-status" class="atlas-status-note">
+        <span class="status-indicator"></span>
+        <span id="modal-atlas-text">Saving score to MongoDB Atlas...</span>
+      </div>
+
+      <div class="modal-actions">
+        <button id="modal-play-again-btn" class="btn btn-primary">Play Again</button>
+        <button id="modal-view-leaderboard-btn" class="btn btn-secondary">View Leaderboard</button>
+        <button id="modal-exit-btn" class="btn btn-sm btn-ghost">Back to Arcade</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GLOBAL LEADERBOARDS -->
+  <div id="leaderboard-modal" class="modal-overlay hidden">
+    <div class="modal-card leaderboard-card">
+      <div class="modal-head">
+        <h2>🏆 Global Leaderboard</h2>
+        <button class="modal-close" id="close-leaderboard-btn">&times;</button>
+      </div>
+
+      <!-- Game Selector Tabs -->
+      <div class="leaderboard-tabs">
+        <button class="lb-tab active" data-game="snake">🐍 Snake</button>
+        <button class="lb-tab" data-game="breakout">🧱 Breakout</button>
+        <button class="lb-tab" data-game="flappy">🐦 Flappy</button>
+        <button class="lb-tab" data-game="2048">🔢 2048</button>
+        <button class="lb-tab" data-game="memory">🎴 Memory</button>
+        <button class="lb-tab" data-game="tictactoe">❌ Tic-Tac-Toe</button>
+        <button class="lb-tab" data-game="invaders">👾 Invaders</button>
+        <button class="lb-tab" data-game="pong">🏓 Pong</button>
+        <button class="lb-tab" data-game="racer">🏎️ Racer</button>
+        <button class="lb-tab" data-game="jump">🦘 Jumper</button>
+        <button class="lb-tab" data-game="minesweeper">💣 Mines</button>
+        <button class="lb-tab" data-game="whack">⚡ Whack</button>
+        <button class="lb-tab" data-game="tetris">🧱 Tetris</button>
+        <button class="lb-tab" data-game="asteroids">☄️ Asteroids</button>
+        <button class="lb-tab" data-game="pacman">👻 Maze</button>
+        <button class="lb-tab" data-game="typing">⌨️ Typer</button>
+        <button class="lb-tab" data-game="frogger">🐸 Frogger</button>
+        <button class="lb-tab" data-game="simon">🎨 Simon</button>
+        <button class="lb-tab" data-game="platformer">🏃 Platformer</button>
+        <button class="lb-tab" data-game="copter">🚁 Copter</button>
+      </div>
+
+      <!-- Leaderboard Table -->
+      <div class="leaderboard-table-wrap">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>High Score</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-tbody">
+            <tr><td colspan="4" class="text-center">Loading leaderboard...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AUTH (Sign In / Register) -->
+  <div id="auth-modal" class="modal-overlay hidden">
+    <div class="modal-card auth-modal-card">
+      <div class="modal-head">
+        <h2>Player Authentication</h2>
+        <button class="modal-close" id="close-auth-btn">&times;</button>
+      </div>
+
+      <div class="tab-header">
+        <button id="modal-tab-login" class="tab-btn active">Sign In</button>
+        <button id="modal-tab-register" class="tab-btn">Create Account</button>
+      </div>
+
+      <div id="modal-auth-alert" class="alert hidden"></div>
+
+      <!-- Login Form -->
+      <form id="modal-login-form" class="auth-form">
+        <div class="form-group">
+          <label for="m-login-email">Email Address</label>
+          <input type="email" id="m-login-email" placeholder="name@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="m-login-password">Password</label>
+          <input type="password" id="m-login-password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" id="m-login-btn" class="btn btn-primary">
+          <span class="btn-text">Sign In</span>
+          <span class="spinner hidden"></span>
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="modal-register-form" class="auth-form hidden">
+        <div class="form-group">
+          <label for="m-reg-username">Username</label>
+          <input type="text" id="m-reg-username" placeholder="gamer123" minlength="3" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="m-reg-email">Email Address</label>
+          <input type="email" id="m-reg-email" placeholder="name@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="m-reg-password">Password (min 6 chars)</label>
+          <input type="password" id="m-reg-password" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+        </div>
+        <button type="submit" id="m-reg-btn" class="btn btn-primary">
+          <span class="btn-text">Create Account</span>
+          <span class="spinner hidden"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Audio Synthesizer -->
+  <script src="js/audio.js"></script>
+
+  <!-- Game Engines -->
+  <script src="js/games/snake.js"></script>
+  <script src="js/games/breakout.js"></script>
+  <script src="js/games/flappy.js"></script>
+  <script src="js/games/game2048.js"></script>
+  <script src="js/games/memory.js"></script>
+  <script src="js/games/tictactoe.js"></script>
+  <script src="js/games/invaders.js"></script>
+  <script src="js/games/pong.js"></script>
+  <script src="js/games/racer.js"></script>
+  <script src="js/games/jump.js"></script>
+  <script src="js/games/minesweeper.js"></script>
+  <script src="js/games/whack.js"></script>
+  <script src="js/games/tetris.js"></script>
+  <script src="js/games/asteroids.js"></script>
+  <script src="js/games/pacman.js"></script>
+  <script src="js/games/typing.js"></script>
+  <script src="js/games/frogger.js"></script>
+  <script src="js/games/simon.js"></script>
+  <script src="js/games/platformer.js"></script>
+  <script src="js/games/copter.js"></script>
+
+  <!-- Arcade App Coordinator -->
+  <script src="app.js"></script>
+</body>
+</html>
