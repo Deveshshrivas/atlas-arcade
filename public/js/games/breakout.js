@@ -105,13 +105,16 @@ class BreakoutGame {
       window.sound?.playHit();
     } else if (this.ballY + this.ballDY > this.canvas.height - this.ballRadius - this.paddleHeight - 10) {
       // Check paddle collision
-      if (this.ballX > this.paddleX && this.ballX < this.paddleX + this.paddleWidth) {
+      if (this.ballX + this.ballRadius > this.paddleX && this.ballX - this.ballRadius < this.paddleX + this.paddleWidth) {
         // Calculate bounce angle based on hit location
         const hitPoint = (this.ballX - (this.paddleX + this.paddleWidth / 2)) / (this.paddleWidth / 2);
         const maxAngle = Math.PI / 3; // 60 degrees
         const currentSpeed = Math.sqrt(this.ballDX * this.ballDX + this.ballDY * this.ballDY);
         this.ballDX = currentSpeed * Math.sin(hitPoint * maxAngle);
         this.ballDY = -Math.abs(currentSpeed * Math.cos(hitPoint * maxAngle));
+
+        // Prevent sticking to paddle
+        this.ballY = this.canvas.height - this.ballRadius - this.paddleHeight - 10;
 
         window.sound?.playJump();
       } else if (this.ballY + this.ballDY > this.canvas.height - this.ballRadius) {
@@ -135,10 +138,10 @@ class BreakoutGame {
         if (b.status === 1) {
           activeBricks++;
           if (
-            this.ballX > b.x &&
-            this.ballX < b.x + this.brickWidth &&
-            this.ballY > b.y &&
-            this.ballY < b.y + this.brickHeight
+            this.ballX + this.ballRadius > b.x &&
+            this.ballX - this.ballRadius < b.x + this.brickWidth &&
+            this.ballY + this.ballRadius > b.y &&
+            this.ballY - this.ballRadius < b.y + this.brickHeight
           ) {
             this.ballDY = -this.ballDY;
             b.status = 0;
@@ -146,9 +149,15 @@ class BreakoutGame {
             window.sound?.playEat();
             this.onScoreUpdate(this.score);
 
-            // Speed up slightly
+            // Speed up slightly, but clamp to max speed to prevent tunneling
+            const maxSpeed = 10;
             this.ballDX *= 1.015;
             this.ballDY *= 1.015;
+            
+            if (this.ballDX > maxSpeed) this.ballDX = maxSpeed;
+            if (this.ballDX < -maxSpeed) this.ballDX = -maxSpeed;
+            if (this.ballDY > maxSpeed) this.ballDY = maxSpeed;
+            if (this.ballDY < -maxSpeed) this.ballDY = -maxSpeed;
           }
         }
       }
