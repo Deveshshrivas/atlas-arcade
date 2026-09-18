@@ -441,7 +441,14 @@
       </div>
 
       <!-- Game Viewport Frame -->
-      <div class="arena-viewport-container">
+      <div class="arena-viewport-container" style="position: relative;">
+        <!-- Pre-game Start Overlay -->
+        <div id="game-start-overlay" class="game-start-overlay hidden">
+          <h3 id="overlay-game-name">Game Name</h3>
+          <p id="overlay-game-hint">Controls go here</p>
+          <button id="overlay-start-btn" class="btn btn-primary">Start Game</button>
+        </div>
+
         <!-- Canvas for Snake, Breakout, Flappy, 2048 -->
         <canvas id="game-canvas" class="game-canvas"></canvas>
 

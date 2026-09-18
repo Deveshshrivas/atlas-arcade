@@ -347,6 +347,8 @@ class ArcadeApp {
     this.arcadeHub.classList.remove('hidden');
     document.getElementById('nav-hub-btn').classList.add('active');
     document.body.classList.remove('game-active-lock');
+    const overlay = document.getElementById('game-start-overlay');
+    if (overlay) overlay.classList.add('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -401,8 +403,20 @@ class ArcadeApp {
         (score, meta) => this.onGameOver(score, meta)
       );
     }
+    // Show Pre-Game Overlay
+    const overlay = document.getElementById('game-start-overlay');
+    document.getElementById('overlay-game-name').textContent = config.name;
+    document.getElementById('overlay-game-hint').innerHTML = config.hint;
+    overlay.classList.remove('hidden');
 
-    this.activeGame.start();
+    const startBtn = document.getElementById('overlay-start-btn');
+    startBtn.onclick = () => {
+      overlay.classList.add('hidden');
+      if (this.activeGame && this.activeGame.start) {
+        this.activeGame.start();
+      }
+    };
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.classList.add('game-active-lock');
   }
