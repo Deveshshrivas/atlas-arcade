@@ -598,6 +598,16 @@ class ArcadeApp {
       });
     });
 
+    // Prevent default window scrolling when using arrow keys or spacebar during a game
+    window.addEventListener('keydown', (e) => {
+      if (this.activeGame && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Spacebar'].includes(e.key)) {
+        // Allow typing in inputs if a modal is open
+        if (e.target.tagName !== 'INPUT') {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+
     // Category Filter Buttons
     document.querySelectorAll('.filter-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
