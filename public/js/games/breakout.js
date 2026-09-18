@@ -240,7 +240,8 @@ class BreakoutGame {
     // Mouse movement
     this.mouseMove = (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      const relativeX = e.clientX - rect.left;
+      const scaleX = this.canvas.width / rect.width;
+      const relativeX = (e.clientX - rect.left) * scaleX;
       if (relativeX > 0 && relativeX < this.canvas.width) {
         this.paddleX = Math.max(0, Math.min(this.canvas.width - this.paddleWidth, relativeX - this.paddleWidth / 2));
       }
@@ -250,7 +251,8 @@ class BreakoutGame {
     this.touchMove = (e) => {
       if (!e.touches[0]) return;
       const rect = this.canvas.getBoundingClientRect();
-      const relativeX = e.touches[0].clientX - rect.left;
+      const scaleX = this.canvas.width / rect.width;
+      const relativeX = (e.touches[0].clientX - rect.left) * scaleX;
       if (relativeX > 0 && relativeX < this.canvas.width) {
         this.paddleX = Math.max(0, Math.min(this.canvas.width - this.paddleWidth, relativeX - this.paddleWidth / 2));
       }

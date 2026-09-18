@@ -278,7 +278,8 @@ class RacerGame {
     // Tap/Click on lane to steer
     this.canvasClick = (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
+      const scaleX = this.canvas.width / rect.width;
+      const clickX = (e.clientX - rect.left) * scaleX;
       if (clickX < this.canvas.width / 3) {
         this.setLane(0);
       } else if (clickX > (this.canvas.width * 2) / 3) {

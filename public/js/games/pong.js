@@ -229,7 +229,8 @@ class PongGame {
 
     this.mouseMove = (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      const relativeY = e.clientY - rect.top;
+      const scaleY = this.canvas.height / rect.height;
+      const relativeY = (e.clientY - rect.top) * scaleY;
       this.playerY = Math.max(10, Math.min(this.canvas.height - this.paddleHeight - 10, relativeY - this.paddleHeight / 2));
     };
 
@@ -239,7 +240,8 @@ class PongGame {
     this.canvas.addEventListener('touchmove', (e) => {
       if (!e.touches[0]) return;
       const rect = this.canvas.getBoundingClientRect();
-      const relativeY = e.touches[0].clientY - rect.top;
+      const scaleY = this.canvas.height / rect.height;
+      const relativeY = (e.touches[0].clientY - rect.top) * scaleY;
       this.playerY = Math.max(10, Math.min(this.canvas.height - this.paddleHeight - 10, relativeY - this.paddleHeight / 2));
     }, { passive: true });
   }

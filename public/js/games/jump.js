@@ -235,7 +235,8 @@ class JumpGame {
     // Tilt or click on sides
     this.pointerDown = (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
+      const scaleX = this.canvas.width / rect.width;
+      const clickX = (e.clientX - rect.left) * scaleX;
       if (clickX < this.canvas.width / 2) {
         this.leftPressed = true;
         this.rightPressed = false;
