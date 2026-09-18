@@ -346,6 +346,7 @@ class ArcadeApp {
     this.gameArena.classList.add('hidden');
     this.arcadeHub.classList.remove('hidden');
     document.getElementById('nav-hub-btn').classList.add('active');
+    document.body.classList.remove('game-active-lock');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -403,6 +404,7 @@ class ArcadeApp {
 
     this.activeGame.start();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.classList.add('game-active-lock');
   }
 
   updateScore(score) {

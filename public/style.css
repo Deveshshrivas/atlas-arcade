@@ -561,6 +561,8 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   max-width: 100%;
+  max-height: calc(100vh - 200px);
+  object-fit: contain;
   height: auto;
 }
 
@@ -1291,3 +1293,5 @@ body {
   from { transform: translateY(50px) scale(0.5); opacity: 0; }
   to { transform: translateY(0) scale(1); opacity: 1; }
 }
+b o d y . g a m e - a c t i v e - l o c k   {   o v e r f l o w :   h i d d e n ;   }  
+ 
